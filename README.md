@@ -79,4 +79,4 @@ targets and publishes them, which is what `install.sh` downloads.
 
 ## License
 
-MIT
+Apache-2.0
