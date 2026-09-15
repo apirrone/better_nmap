@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Tiny TUI to find devices on your LAN fast, with fuzzy hostname search"
 license = "MIT"
-repository = "https://github.com/apirrone/bnmap"
+repository = "https://github.com/apirrone/better_nmap"
 
 [dependencies]
 ratatui = "0.29"

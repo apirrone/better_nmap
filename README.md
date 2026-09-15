@@ -18,7 +18,7 @@ A tiny [ratatui](https://ratatui.rs) TUI, no root needed.
 ## Install
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/apirrone/bnmap/main/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/apirrone/better_nmap/main/install.sh | sh
 ```
 
 Linux x86_64, aarch64 and armv7. Or `cargo install --path .` from a clone.

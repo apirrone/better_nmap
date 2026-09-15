@@ -1,6 +1,6 @@
 #!/bin/sh
 # Installation script for bnmap
-# Usage: curl -sSL https://raw.githubusercontent.com/apirrone/bnmap/main/install.sh | sh
+# Usage: curl -sSL https://raw.githubusercontent.com/apirrone/better_nmap/main/install.sh | sh
 
 set -e
 
@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Repository information
-REPO="apirrone/bnmap"
+REPO="apirrone/better_nmap"
 BINARY_NAME="bnmap"
 
 # Print colored output
