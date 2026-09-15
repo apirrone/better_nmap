@@ -1,0 +1,21 @@
+[package]
+name = "bnmap"
+version = "0.1.0"
+edition = "2021"
+description = "Tiny TUI to find devices on your LAN fast, with fuzzy hostname search"
+license = "MIT"
+repository = "https://github.com/apirrone/bnmap"
+
+[dependencies]
+ratatui = "0.29"
+crossterm = "0.28"
+fuzzy-matcher = "0.3"
+if-addrs = "0.13"
+socket2 = "0.5"
+dns-lookup = "2"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+strip = true
