@@ -54,6 +54,20 @@ detect_platform() {
                     ;;
             esac
             ;;
+        Darwin*)
+            case "$arch" in
+                arm64|aarch64)
+                    platform="macos-aarch64"
+                    ;;
+                x86_64)
+                    platform="macos-x86_64"
+                    ;;
+                *)
+                    print_error "Unsupported architecture: $arch"
+                    exit 1
+                    ;;
+            esac
+            ;;
         *)
             print_error "Unsupported operating system: $os"
             exit 1

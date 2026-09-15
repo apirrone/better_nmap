@@ -11,16 +11,33 @@ env:
 jobs:
   build:
     name: Build ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
           - target: x86_64-unknown-linux-musl
             name: linux-x86_64
+            os: ubuntu-latest
+            cross: true
           - target: aarch64-unknown-linux-musl
             name: linux-aarch64
+            os: ubuntu-latest
+            cross: true
           - target: armv7-unknown-linux-musleabihf
             name: linux-armv7
+            os: ubuntu-latest
+            cross: true
+          # Darwin needs Apple's SDK, so it builds on a macOS runner with
+          # plain cargo; macos-latest is arm64 and ships both SDKs, so the
+          # x86_64 slice cross-compiles there without extra tooling.
+          - target: aarch64-apple-darwin
+            name: macos-aarch64
+            os: macos-latest
+            cross: false
+          - target: x86_64-apple-darwin
+            name: macos-x86_64
+            os: macos-latest
+            cross: false
 
     steps:
       - name: Checkout code
@@ -32,10 +49,11 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install cross-compilation tools
+        if: matrix.cross
         run: cargo install cross --git https://github.com/cross-rs/cross
 
       - name: Build release binary
-        run: cross build --release --target ${{ matrix.target }}
+        run: ${{ matrix.cross && 'cross' || 'cargo' }} build --release --target ${{ matrix.target }}
 
       - name: Prepare binary
         run: |
@@ -90,7 +108,12 @@ jobs:
             - `linux-x86_64`: Intel/AMD 64-bit
             - `linux-aarch64`: ARM64 (Raspberry Pi 4/5 64-bit, Jetson, ...)
             - `linux-armv7`: ARMv7 (Raspberry Pi 2/3/4 32-bit)
+            - `macos-aarch64`: Apple silicon (M1 and later)
+            - `macos-x86_64`: Intel Macs
 
             Verify with `sha256sum -c SHA256SUMS`.
+
+            macOS binaries are unsigned: on first run, clear the quarantine
+            flag with `xattr -d com.apple.quarantine /usr/local/bin/bnmap`.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
