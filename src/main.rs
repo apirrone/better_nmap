@@ -1,3 +1,4 @@
+mod clipboard;
 mod model;
 mod net;
 mod oui;
@@ -34,7 +35,7 @@ OPTIONS
 
 KEYS (TUI)
     type      fuzzy-filter on ip / hostname / vendor / mac
-    ↑ ↓       move            enter     print selected ip and quit
+    ↑ ↓       move            enter     print ip, copy to clipboard, quit
     ctrl-r    rescan          esc       quit without output
 ";
 
@@ -104,7 +105,13 @@ fn main() {
 
     if !(args.list || args.one || args.json) {
         match ui::run(iface, args.range, args.query) {
-            Ok(Some(ip)) => println!("{ip}"),
+            Ok(Some(ip)) => {
+                println!("{ip}");
+                match clipboard::copy(&ip.to_string()) {
+                    Some(how) => eprintln!("copied {ip} to clipboard ({how})"),
+                    None => eprintln!("could not copy to clipboard"),
+                }
+            }
             Ok(None) => exit(1),
             Err(e) => die(&e.to_string()),
         }

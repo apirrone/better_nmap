@@ -12,7 +12,7 @@ A tiny [ratatui](https://ratatui.rs) TUI, no root needed.
  ● 192.168.10.150   reachy-mini-2.local       88:a2:9e:78:46:8e  Raspberry Pi
  ● 192.168.10.162   reachy-mini-3.local       88:a2:9e:8d:a3:9c  Raspberry Pi
  ● 192.168.10.164   reachy-mini-ci.local      88:a2:9e:3b:47:18  Raspberry Pi
- ↑↓ move  enter print ip  ctrl-r rescan  esc quit
+ ↑↓ move  enter print + copy ip  ctrl-r rescan  esc quit
 ```
 
 ## Install
@@ -36,6 +36,9 @@ bnmap -i eth0            # choose the interface
 bnmap -r 10.0.4.0/22     # sweep a specific range
 ```
 
+Enter also copies the IP to the clipboard, via `wl-copy` / `xclip` / `xsel` when available
+and the OSC 52 terminal escape otherwise (works over SSH in most terminals).
+
 The TUI draws on **stderr** and prints only the chosen IP on **stdout**, so it composes with
 shell substitution like `fzf` does.
 
@@ -43,7 +46,7 @@ shell substitution like `fzf` does.
 |---|---|
 | type | fuzzy-filter on IP, hostname, vendor, MAC |
 | `↑` `↓` / `ctrl-p` `ctrl-n` | move |
-| `enter` | print selected IP and quit |
+| `enter` | print selected IP, copy it to the clipboard, quit |
 | `ctrl-r` | rescan |
 | `esc` / `ctrl-c` | quit with no output |
 
