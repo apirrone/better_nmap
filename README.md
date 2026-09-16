@@ -21,7 +21,8 @@ A tiny [ratatui](https://ratatui.rs) TUI, no root needed.
 curl -sSL https://raw.githubusercontent.com/apirrone/better_nmap/main/install.sh | sh
 ```
 
-Linux x86_64, aarch64 and armv7. Or `cargo install --path .` from a clone.
+Linux x86_64, aarch64 and armv7, macOS on Apple silicon and Intel. Or
+`cargo install --path .` from a clone.
 
 ## Usage
 
@@ -54,15 +55,16 @@ shell substitution like `fzf` does.
 
 - **Discovery without root.** Sending a UDP datagram to every address in the subnet makes
   the kernel do the ARP resolution. A few hundred milliseconds later the neighbour table
-  (`ip neigh`) lists every host that answered, with its MAC. No raw sockets, no libpcap,
-  no sudo. Three rounds, about one second total.
+  (`ip neigh` on Linux, `arp -an` on macOS) lists every host that answered, with its MAC.
+  No raw sockets, no libpcap, no sudo. Three rounds, about one second total.
 - **Hostnames from three sources in parallel**, each with a 1.5 s budget:
   mDNS reverse lookups (plus passively heard announcements), NetBIOS node status for
   Windows machines, and the system resolver for networks whose router serves reverse DNS.
 - **Vendor** from the IEEE MA-L registry embedded in the binary
   (`scripts/update_oui.sh` regenerates `data/oui.txt`). Randomized MACs show as `(private MAC)`.
 - `●` means the kernel confirmed the host answered during this scan. `○` means it is in the
-  neighbour table from earlier but has not been re-confirmed yet.
+  neighbour table from earlier but has not been re-confirmed yet. BSD `arp` reports no
+  reachability state, so on macOS every resolved host reads as `●`.
 
 Subnets wider than a /23 are clipped around your own address to stay well below the
 kernel's neighbour-table limit. Pass `-r` to sweep something else.
